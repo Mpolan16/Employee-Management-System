@@ -13,7 +13,6 @@ CREATE TABLE Employee_role (
   title VARCHAR(30) NULL,
   salary DECIMAL(10,4) NULL,
   department_id INT NULL,
-  manager_id INT NULL,
   PRIMARY KEY (id)
 );
 CREATE TABLE Employee (
