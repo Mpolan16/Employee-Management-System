@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const util = require("util");
+const consoletable = require("console.table");
 
 let connection = mysql.createConnection({
   host: "localhost",
@@ -133,8 +134,10 @@ async function addRole(){
                 message: "What is the department id?",
                 choices: departmentChoices
             }]).then((answers)=>{
-                connection.query("INSERT INTO Employee_role SET ?", answers)
+                connection.query("INSERT INTO Employee_role SET ?", answers);
+                console.log(answers);
             })
+            
 }
 function addDepartment() {
     inquirer
@@ -145,30 +148,22 @@ function addDepartment() {
                 message: "What department would you like to add?"
             }
             ]).then((answers)=>{
-                connection.query("INSERT INTO Department SET ?", answers)
-            })
+                connection.query("INSERT INTO Department SET ?", answers);
+                console.table(answers);
+            });
+
 }
 async function viewDepartments(){
-let deptView = await connection.query("SELECT * FROM Department");
-let showDept = await deptView.map(function(depList){
-    return{
-        name:depList.department_name,
-        value:depList.id
-    }
-})
-console.log(showDept);
+let showDepartment= await connection.query("SELECT * FROM Department");
+console.table(showDepartment);
 }
 async function viewRoles() {
-let roleView = await connection.query("SELECT * FROM Employee_role");
-let showRoles = await roleView.map(function(roleList){
-    return{
-        name:roleList.title,
-        value:roleList.id
-    }
-})
-console.log(showRoles);
+let showRoles = await connection.query("SELECT * FROM Employee_role");
+console.table(showRoles);
 }
 async function viewEmployees(){
+let showEmployees = await connection.query("SELECT * FROM Employee");
+console.table(showEmployees);
 }
 function updateRoles() {
 }
