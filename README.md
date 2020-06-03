@@ -44,4 +44,4 @@ To run tests, run the following command:
 
 ![picture of developer](https://avatars3.githubusercontent.com/u/60660512?v=4)
 
-Email: mpolan16@g.holycross.edu
+Mónica Polanco Fabían | Email: mpolan16@g.holycross.edu
