@@ -94,11 +94,10 @@ async function addEmployee() {
             }
         ]).then((answers)=>{
             connection.query("INSERT INTO Employee SET ?", answers);
-            console.log(answers)
+            console.table(answers)
         })
 
 }
-
 async function addRole(){
     let departments = await connection.query("SELECT id, department_name FROM Department");
     let titles = await connection.query("SELECT id, title FROM Employee_role");
@@ -114,7 +113,6 @@ async function addRole(){
         value:title.id
         }
     })
-
     inquirer
         .prompt([
             {
@@ -135,7 +133,7 @@ async function addRole(){
                 choices: departmentChoices
             }]).then((answers)=>{
                 connection.query("INSERT INTO Employee_role SET ?", answers);
-                console.log(answers);
+                console.table(answers);
             })
             
 }
@@ -165,5 +163,39 @@ async function viewEmployees(){
 let showEmployees = await connection.query("SELECT * FROM Employee");
 console.table(showEmployees);
 }
-function updateRoles() {
+async function updateRoles() {
+    let roles = await connection.query("SELECT id, title FROM Employee_role");
+    let employees = await connection.query("SELECT id, first_name, last_name FROM Employee")
+    let roleChoices = roles.map(function(role) {
+        return{
+        name:role.title,
+        value:role.id
+        }
+    })
+    let employeeChoices = employees.map(function(employee){
+        return{
+            name:employee.first_name + " " + employee.last_name,
+            value:employee.id
+        }
+    })
+    console.log(employeeChoices)
+    console.log(roleChoices)
+inquirer
+        .prompt([
+            {
+                name: "employeeChoices",
+                type: "list",
+                message: "What is the name of the employee to update?",
+                choices:employeeChoices
+            },
+            {
+                name: "roleChoices",
+                type: "list",
+                message: "What role will you update it to?",
+                choices: roleChoices
+            }
+            ]).then((update)=>{
+                connection.query("UPDATE Employee SET role_id = ? WHERE id = ?", [update.roleChoices,update.employeeChoices]);
+                console.log("Update complete!");
+            });
 }

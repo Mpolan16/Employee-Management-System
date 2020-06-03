@@ -21,7 +21,8 @@ CREATE TABLE Employee (
   last_name VARCHAR(30) NULL,
   role_id INT NOT NULL,
   manager_id INT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY (role_id) REFERENCES Employee_role (id)
 );
 
 SELECT * FROM Department;
