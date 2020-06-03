@@ -18,39 +18,49 @@ connection.connect(function(err) {
   start();
 });
 
-function start() {
-    inquirer
+async function start() {
+    const answer = await inquirer
         .prompt({
             name: "initiate",
             type: "list",
             message: "Would you like to do?",
-            choices: ["Add Employee","Add Role","Add Department", "View Departments","View Roles","View Employees", "Update Employee Roles","EXIT"]
-      }).then(function(answer) {
-        switch (answer.initiate){
-            case "Add Employee":
-                addEmployee();
-                break;
-            case "Add Role":
-                addRole();
-                break;
-            case "Add Department":
-                addDepartment();
-                break;
-            case "View Departments":
-                viewDepartments();
-                break;
-            case "View Roles":
-                viewRoles();
-                break;
-            case "View Employees":
-                viewEmployees();
-                break;
-            case "Update Employee Roles":
-                updateRoles();
-                break;
-            case "EXIT":
-                connection.end();            
-      }});
+            choices: ["Add Employee", "Add Role", "Add Department", "View Departments", "View Roles", "View Employees", "Update Employee Roles", "EXIT"]
+        });
+    nextQuestion(answer.initiate);
+    };
+    async function nextQuestion(answer){
+    switch (answer) {
+        case "Add Employee":
+            await addEmployee();
+            start();
+            break;
+        case "Add Role":
+            await addRole();
+            start();
+            break;
+        case "Add Department":
+            await addDepartment();
+            start();
+            break;
+        case "View Departments":
+            await viewDepartments();
+            start();
+            break;
+        case "View Roles":
+            await viewRoles();
+            start();
+            break;
+        case "View Employees":
+            await viewEmployees();
+            start();
+            break;
+        case "Update Employee Roles":
+            await updateRoles();
+            start();
+            break;
+        case "EXIT":
+            connection.end();
+    }
 }
 
 async function addEmployee() {
@@ -68,7 +78,7 @@ async function addEmployee() {
             value:employee.id
         }
     })
-    inquirer
+    await inquirer
         .prompt([
             {
                 name: "first_name",
@@ -113,7 +123,7 @@ async function addRole(){
         value:title.id
         }
     })
-    inquirer
+    await inquirer
         .prompt([
             {
                 name: "title",
@@ -137,8 +147,8 @@ async function addRole(){
             })
             
 }
-function addDepartment() {
-    inquirer
+async function addDepartment() {
+    await inquirer
         .prompt([
             {
                 name: "department_name",
@@ -178,9 +188,8 @@ async function updateRoles() {
             value:employee.id
         }
     })
-    console.log(employeeChoices)
-    console.log(roleChoices)
-inquirer
+
+    await inquirer
         .prompt([
             {
                 name: "employeeChoices",
