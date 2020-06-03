@@ -55,15 +55,12 @@ function start() {
 async function addEmployee() {
     let roles = await connection.query("SELECT id, title FROM Employee_role");
     let employees = await connection.query("SELECT * FROM Employee")
-    console.log(roles);
-    console.log(employees);
     let roleChoices = roles.map(function(role) {
         return{
         name:role.title,
         value:role.id
         }
     })
-    console.log(roleChoices);
     let managerChoices = employees.map(function(employee){
         return{
             name:employee.first_name+" "+employee.last_name,
@@ -98,26 +95,24 @@ async function addEmployee() {
             connection.query("INSERT INTO Employee SET ?", answers);
             console.log(answers)
         })
+
 }
 
 async function addRole(){
     let departments = await connection.query("SELECT id, department_name FROM Department");
     let titles = await connection.query("SELECT id, title FROM Employee_role");
-    console.log(departments);
     let departmentChoices = departments.map(function(department) {
         return{
         name:department.department_name,
         value:department.id
         }
     })
-    console.log(departmentChoices);
     let titleChoices = titles.map(function(title) {
         return{
         name:title.title,
         value:title.id
         }
     })
-    console.log(titleChoices);
 
     inquirer
         .prompt([
@@ -139,16 +134,41 @@ async function addRole(){
                 choices: departmentChoices
             }]).then((answers)=>{
                 connection.query("INSERT INTO Employee_role SET ?", answers)
-                console.log(answers)
             })
 }
 function addDepartment() {
+    inquirer
+        .prompt([
+            {
+                name: "department_name",
+                type: "input",
+                message: "What department would you like to add?"
+            }
+            ]).then((answers)=>{
+                connection.query("INSERT INTO Department SET ?", answers)
+            })
 }
-function viewDepartments(){
+async function viewDepartments(){
+let deptView = await connection.query("SELECT * FROM Department");
+let showDept = await deptView.map(function(depList){
+    return{
+        name:depList.department_name,
+        value:depList.id
+    }
+})
+console.log(showDept);
 }
-function viewRoles() {
+async function viewRoles() {
+let roleView = await connection.query("SELECT * FROM Employee_role");
+let showRoles = await roleView.map(function(roleList){
+    return{
+        name:roleList.title,
+        value:roleList.id
+    }
+})
+console.log(showRoles);
 }
-function viewEmployees(){
+async function viewEmployees(){
 }
 function updateRoles() {
 }
