@@ -102,6 +102,7 @@ async function addEmployee() {
 
 async function addRole(){
     let departments = await connection.query("SELECT id, department_name FROM Department");
+    let titles = await connection.query("SELECT id, title FROM Employee_role");
     console.log(departments);
     let departmentChoices = departments.map(function(department) {
         return{
@@ -110,12 +111,21 @@ async function addRole(){
         }
     })
     console.log(departmentChoices);
+    let titleChoices = titles.map(function(title) {
+        return{
+        name:title.title,
+        value:title.id
+        }
+    })
+    console.log(titleChoices);
+
     inquirer
         .prompt([
             {
                 name: "title",
-                type: "input",
-                message: "What is the position title?"
+                type: "list",
+                message: "What is the position title?",
+                choices: titleChoices
             },
             {
                 name: "salary",
