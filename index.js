@@ -70,8 +70,6 @@ async function addEmployee() {
             value:employee.id
         }
     })
-    //will return an array of objt that constain the id and title of the role. I need to grab the id and table and concat into a single string to push into an array. (forloop,.map.foreach).the array of string will be the choices in the prompts. once you get answer from user use .split to just get the id portion.
-    //for the manager let manager = and get new array back similiar to the id title on, but you need a null option (using .map may be tricky look at unshift)
     inquirer
         .prompt([
             {
@@ -102,7 +100,37 @@ async function addEmployee() {
         })
 }
 
-function addRole(){
+async function addRole(){
+    let departments = await connection.query("SELECT id, department_name FROM Department");
+    console.log(departments);
+    let departmentChoices = departments.map(function(department) {
+        return{
+        name:department.department_name,
+        value:department.id
+        }
+    })
+    console.log(departmentChoices);
+    inquirer
+        .prompt([
+            {
+                name: "title",
+                type: "input",
+                message: "What is the position title?"
+            },
+            {
+                name: "salary",
+                type: "input",
+                message: "What is the salary for this role?"
+            },
+            {
+                name: "department_id",
+                type: "list",
+                message: "What is the department id?",
+                choices: departmentChoices
+            }]).then((answers)=>{
+                connection.query("INSERT INTO Employee_role SET ?", answers)
+                console.log(answers)
+            })
 }
 function addDepartment() {
 }
