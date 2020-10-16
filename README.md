@@ -2,7 +2,7 @@
 
 ## Description
 
-The Empoloyee Management System is a convenient way to manage employees, departments, and roles through the terminal.
+The Employee Management System is a convenient way to manage employees, departments, and roles through the terminal.
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ https://share.getcloudapp.com/6qu2OlzG
 
 ## Tools
 
-Javascript, MySql, Node.js
+MySql, Node.js
 
 ## Tests
  
